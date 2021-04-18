@@ -9,15 +9,14 @@ class App extends React.Component {
     taskName: ''
   };
   
-  componentDidMount = () => {
+  componentDidMount(){
     this.socket = io.connect('http://localhost:8000/');
-    this.socket.on('removeTask', (task) => this.removeTask(task));
+    this.socket.on('addTask', (task) => this.addTask(task));
+    this.socket.on('removeTask', (id) => this.removeTask(id));
   };
 
   removeTask = (id) => {
-    const itemToBeRemoved = this.tasks.find(tasks => tasks[id] === this.socket[id]);
-    const removedTask = this.tasks.indexOf(itemToBeRemoved);
-    this.tasks.splice(removedTask, 1);
+    this.setState({ tasks: this.state.tasks.filter(tasks => tasks.id !== id) });
     this.socket.emit('removeTask', id);
   };
 
@@ -33,7 +32,10 @@ class App extends React.Component {
   };
 
   addTask = (task) => {
-    
+    this.setState({
+      tasks: [...this.state.tasks, task],
+      taskName: '',
+    });
   };
 
   render() {
