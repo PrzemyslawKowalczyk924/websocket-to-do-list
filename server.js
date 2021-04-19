@@ -1,13 +1,15 @@
 const express = require('express');
-//const path = require('path');
+//const cors = require('cors');
 const socket = require('socket.io');
 
 const app = express();
 
 const tasks = [];
 
+//app.use(cors());
+
 const server = app.listen(process.env.PORT || 8000, () => {
-  console.log('Server is running...');
+  console.log('Server is running on port 8000');
 });
 
 app.use((req, res) => {
@@ -31,9 +33,10 @@ io.on('connection', (socket) => {
     const itemToBeRemoved = tasks.find(tasks => tasks.id === socket.id);
     const taskToRemove = tasks.indexOf(itemToBeRemoved);
     if(itemToBeRemoved) {
-      socket.broadcast.emit('removeTask', id);
       tasks.splice(taskToRemove, 1);
       console.log('upadateData', tasks);
     }
+    socket.broadcast.emit('removeTask', id);
+    console.log('User: ' + socket.id + 'just removed' + 'removeTaskTask', id);
   });
 });

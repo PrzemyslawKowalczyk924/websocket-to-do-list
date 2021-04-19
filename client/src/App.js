@@ -17,7 +17,7 @@ class App extends React.Component {
   };
 
   removeTask = (id, localEvent) => {
-    this.setState({ tasks: this.state.tasks.filter(task => task.id !== id) });
+    this.setState({ tasks: this.state.tasks.filter(tasks => tasks.id !== id) });
     if(localEvent === true) {
       this.socket.emit('removeTask', id);
     };
