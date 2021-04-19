@@ -13,7 +13,8 @@ const server = app.listen(process.env.PORT || 8000, () => {
 });
 
 app.use((req, res) => {
-  res.status(404).send({ message: 'Not found...' });
+  res.status(200).send('it works!');
+  //res.status(404).send({ message: 'Not found...' });
 });
 
 const io = socket(server);
@@ -30,7 +31,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('removeTask', (id) => {
-    const itemToBeRemoved = tasks.find(tasks => tasks.id === socket.id);
+    const itemToBeRemoved = tasks.find(tasks => tasks.id === id);
     const taskToRemove = tasks.indexOf(itemToBeRemoved);
     if(itemToBeRemoved) {
       tasks.splice(taskToRemove, 1);
